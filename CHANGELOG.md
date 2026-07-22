@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 - Unreleased
+## 0.1.0 - 2026-07-22
 
 - Add BailingHub credentials with HTTPS-by-default validation.
 - Add Submit Governed Job, Get Job, and bounded Wait for Job operations.
