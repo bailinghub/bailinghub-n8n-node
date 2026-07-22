@@ -1,0 +1,72 @@
+{
+  "name": "BailingHub - Submit and Wait",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Run Example",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "operation": "submit",
+        "requestId": "={{ $execution.id + '-bailinghub-example' }}",
+        "route": "replace_with_allowed_route",
+        "input": "Review this test task through the configured BailingHub route."
+      },
+      "id": "submit-governed-job",
+      "name": "Submit Governed Job",
+      "type": "n8n-nodes-bailinghub.bailingHub",
+      "typeVersion": 1,
+      "position": [260, 0]
+    },
+    {
+      "parameters": {
+        "operation": "wait",
+        "jobId": "={{ $json.job_id }}",
+        "maxWaitSeconds": 20,
+        "pollIntervalSeconds": 2
+      },
+      "id": "wait-for-job",
+      "name": "Wait for Governed Job",
+      "type": "n8n-nodes-bailinghub.bailingHub",
+      "typeVersion": 1,
+      "position": [520, 0]
+    }
+  ],
+  "connections": {
+    "Run Example": {
+      "main": [
+        [
+          {
+            "node": "Submit Governed Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Submit Governed Job": {
+      "main": [
+        [
+          {
+            "node": "Wait for Governed Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "11111111-1111-4111-8111-111111111111",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

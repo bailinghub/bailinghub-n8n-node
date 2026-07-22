@@ -1,0 +1,71 @@
+{
+	"name": "n8n-nodes-bailinghub",
+	"version": "0.1.0",
+	"description": "Submit and monitor governed AI jobs through BailingHub from n8n workflows.",
+	"license": "MIT",
+	"homepage": "https://github.com/bailinghub/bailinghub-n8n-node#readme",
+	"keywords": [
+		"n8n-community-node-package",
+		"bailinghub",
+		"ai-agent-governance",
+		"agent-tool-governance",
+		"human-approval",
+		"audit-trail",
+		"business-system-automation",
+		"a2b",
+		"workflow-automation"
+	],
+	"author": {
+		"name": "BailingHub Contributors",
+		"email": "niejingchuan@live.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/bailinghub/bailinghub-n8n-node.git"
+	},
+	"bugs": {
+		"url": "https://github.com/bailinghub/bailinghub-n8n-node/issues"
+	},
+	"engines": {
+		"node": ">=20.15"
+	},
+	"scripts": {
+		"build": "n8n-node build",
+		"build:watch": "tsc --watch",
+		"dev": "n8n-node dev",
+		"lint": "n8n-node lint",
+		"lint:fix": "n8n-node lint --fix",
+		"test": "npm run build && node --test tests/*.test.cjs",
+		"verify": "npm run lint && npm test",
+		"prepublishOnly": "npm run verify"
+	},
+	"files": [
+		"dist/credentials",
+		"dist/nodes",
+		"dist/shared"
+	],
+	"publishConfig": {
+		"access": "public",
+		"provenance": true
+	},
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"strict": true,
+		"credentials": [
+			"dist/credentials/BailingHubApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/BailingHub/BailingHub.node.js"
+		]
+	},
+	"devDependencies": {
+		"@n8n/node-cli": "0.40.2",
+		"@types/node": "^22.15.0",
+		"eslint": "9.32.0",
+		"prettier": "3.6.2",
+		"typescript": "5.9.2"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}
