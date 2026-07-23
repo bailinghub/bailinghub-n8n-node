@@ -4,11 +4,23 @@ const test = require('node:test');
 const {
 	BailingHubClient,
 	BailingHubClientError,
+	CLIENT_API_ENDPOINTS,
+	CLIENT_API_KNOWN_STATUSES,
+	CLIENT_API_LIMITS,
+	CLIENT_API_TERMINAL_STATUSES,
 	normalizeBaseUrl,
 	waitForJob,
 } = require('../dist/shared/client.js');
+const compatibility = require('../compatibility/client-api.json');
 
 const JOB_ID = '11111111-1111-4111-8111-111111111111';
+
+test('Client API compatibility declaration matches adapter code', () => {
+	assert.deepEqual(compatibility.endpoint_contracts, CLIENT_API_ENDPOINTS);
+	assert.deepEqual(compatibility.known_job_statuses, [...CLIENT_API_KNOWN_STATUSES]);
+	assert.deepEqual(compatibility.terminal_job_statuses, [...CLIENT_API_TERMINAL_STATUSES]);
+	assert.deepEqual(compatibility.limits, CLIENT_API_LIMITS);
+});
 
 test('normalizes URLs and requires explicit opt-in for insecure remote HTTP', () => {
 	assert.equal(normalizeBaseUrl('https://hub.example.com/base/'), 'https://hub.example.com/base');

@@ -7,7 +7,7 @@ import type {
 	Icon,
 } from 'n8n-workflow';
 
-import { normalizeBaseUrl } from '../shared/client';
+import { CLIENT_API_ENDPOINTS, normalizeBaseUrl } from '../shared/client';
 
 export class BailingHubApi implements ICredentialType {
 	name = 'bailingHubApi';
@@ -66,8 +66,9 @@ export class BailingHubApi implements ICredentialType {
 
 	test: ICredentialTestRequest = {
 		request: {
+			method: CLIENT_API_ENDPOINTS.health.method,
 			baseURL: '={{$credentials.baseUrl.replace(/\\/$/, "")}}',
-			url: '/health',
+			url: CLIENT_API_ENDPOINTS.health.path,
 			headers: {
 				Authorization: '=Bearer {{$credentials.clientToken}}',
 			},

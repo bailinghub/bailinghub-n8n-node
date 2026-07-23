@@ -36,13 +36,15 @@
 		"lint": "n8n-node lint",
 		"lint:fix": "n8n-node lint --fix",
 		"test": "npm run build && node --test tests/*.test.cjs",
+		"client-api:check": "node scripts/check-client-api-contract.mjs",
 		"verify": "npm run lint && npm test",
 		"prepublishOnly": "npm run verify"
 	},
 	"files": [
 		"dist/credentials",
 		"dist/nodes",
-		"dist/shared"
+		"dist/shared",
+		"compatibility/client-api.json"
 	],
 	"publishConfig": {
 		"access": "public",

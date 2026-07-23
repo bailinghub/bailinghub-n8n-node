@@ -1,10 +1,32 @@
-const TERMINAL_STATUSES = new Set(['done', 'error', 'rejected']);
-const KNOWN_STATUSES = new Set(['queued', 'running', 'dispatched', ...TERMINAL_STATUSES]);
+export const CLIENT_API_TERMINAL_STATUSES = ['done', 'error', 'rejected'] as const;
+export const CLIENT_API_KNOWN_STATUSES = [
+	'queued',
+	'running',
+	'dispatched',
+	...CLIENT_API_TERMINAL_STATUSES,
+] as const;
+export const CLIENT_API_LIMITS = {
+	request_id_max_length: 128,
+	route_max_length: 64,
+	input_max_length: 100_000,
+	response_max_bytes: 1024 * 1024,
+} as const;
+export const CLIENT_API_ENDPOINTS = {
+	health: { method: 'GET', path: '/health', authentication: 'none' },
+	'run.submit': { method: 'POST', path: '/run', authentication: 'bearer' },
+	'jobs.get': {
+		method: 'GET',
+		path: '/jobs/{job_id}',
+		authentication: 'bearer',
+	},
+} as const;
+const TERMINAL_STATUSES = new Set<string>(CLIENT_API_TERMINAL_STATUSES);
+const KNOWN_STATUSES = new Set<string>(CLIENT_API_KNOWN_STATUSES);
 const ROUTE_PATTERN = /^[a-z0-9][a-z0-9_-]{1,63}$/;
 const JOB_ID_PATTERN =
 	/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 const LOOPBACK_HOSTS = new Set(['localhost', '127.0.0.1', '::1', '[::1]']);
-const MAX_RESPONSE_BYTES = 1024 * 1024;
+const MAX_RESPONSE_BYTES = CLIENT_API_LIMITS.response_max_bytes;
 
 export type BailingHubHttpRequest = (options: {
 	method: 'GET' | 'POST';
@@ -110,7 +132,7 @@ function normalizeJob(value: unknown, requireRequestId = false): BailingHubJob {
 	if (requireRequestId && !requestId) {
 		throw new BailingHubClientError('BailingHub returned a job without request_id.');
 	}
-	if (requestId.length > 128) {
+	if (requestId.length > CLIENT_API_LIMITS.request_id_max_length) {
 		throw new BailingHubClientError('BailingHub returned an invalid request_id.');
 	}
 
@@ -210,15 +232,20 @@ export class BailingHubClient {
 	) {}
 
 	async submitJob(requestIdValue: unknown, routeValue: unknown, inputValue: unknown) {
-		const requestId = requireText(requestIdValue, 'Request ID', 128);
-		const route = requireText(routeValue, 'Route', 64);
-		const input = requireText(inputValue, 'Input', 100_000);
+		const requestId = requireText(
+			requestIdValue,
+			'Request ID',
+			CLIENT_API_LIMITS.request_id_max_length,
+		);
+		const route = requireText(routeValue, 'Route', CLIENT_API_LIMITS.route_max_length);
+		const input = requireText(inputValue, 'Input', CLIENT_API_LIMITS.input_max_length);
 		if (!ROUTE_PATTERN.test(route)) {
 			throw new Error('Route must match ^[a-z0-9][a-z0-9_-]{1,63}$.');
 		}
+		const endpoint = CLIENT_API_ENDPOINTS['run.submit'];
 		const response = await this.perform({
-			method: 'POST',
-			url: `${this.baseUrl}/run`,
+			method: endpoint.method,
+			url: `${this.baseUrl}${endpoint.path}`,
 			body: { request_id: requestId, route, input },
 			timeout: 15_000,
 		});
@@ -230,9 +257,10 @@ export class BailingHubClient {
 		if (!JOB_ID_PATTERN.test(jobId)) {
 			throw new Error('Job ID must be a UUID returned by BailingHub.');
 		}
+		const endpoint = CLIENT_API_ENDPOINTS['jobs.get'];
 		const response = await this.perform({
-			method: 'GET',
-			url: `${this.baseUrl}/jobs/${encodeURIComponent(jobId)}`,
+			method: endpoint.method,
+			url: `${this.baseUrl}${endpoint.path.replace('{job_id}', encodeURIComponent(jobId))}`,
 			timeout: 15_000,
 		});
 		return normalizeJob(response);
