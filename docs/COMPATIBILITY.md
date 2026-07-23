@@ -2,7 +2,7 @@
 
 | Adapter version | BailingHub contract | n8n | Status |
 | --- | --- | --- | --- |
-| 0.1.x | `bailing.contract.v2.13` compatible Client API | To be fixed by release E2E evidence | Development |
+| 0.1.x | `bailing.client-api.v1` | Creator Portal manual review | Submitted |
 
 ## Required BailingHub Surface
 
@@ -15,5 +15,8 @@ Unknown additive fields are ignored. Existing fields are filtered into a stable 
 The adapter fails closed on unknown status values, malformed job IDs, invalid result shapes,
 oversized responses, and non-object JSON.
 
-The exact n8n version used for the clean-install E2E test is recorded here before the first
-npm release.
+The machine-readable adapter claim lives at `compatibility/client-api.json`. CI checks it
+against the current BailingHub core contract with `scripts/check-client-api-contract.mjs`;
+core CI also checks this adapter before accepting a Client API change. The gate verifies
+endpoint method, path, authentication shape, request limits, consumed fields, statuses, and
+classified HTTP failures rather than relying on a version label alone.
