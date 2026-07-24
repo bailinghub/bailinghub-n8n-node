@@ -77,6 +77,19 @@ An importable example is available at
 the route placeholder with a route allowed for the dedicated BailingHub client, then assign
 the same BailingHub credential to both BailingHub nodes.
 
+## First Success and Feedback
+
+Use the [n8n integration path](https://www.bailinghub.com/en/integrations#n8n) as the
+canonical start page. The first integration is successful when the example submits through
+an allowlisted route, the same `job_id` reaches a terminal state, BailingHub retains its
+approval and audit state, and n8n never receives administrator or business-system
+credentials.
+
+Report a PASS, partial result, or failure through the
+[BailingHub independent validation form](https://github.com/bailinghub/bailinghub/issues/new?template=independent_validation.yml)
+and select the n8n track. Never include tokens, model keys, personal information, or
+production business data.
+
 ## Compatibility
 
 The adapter targets BailingHub's public `POST /run` and `GET /jobs/{job_id}` Client API and
