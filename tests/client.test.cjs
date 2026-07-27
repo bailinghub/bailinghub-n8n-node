@@ -12,10 +12,12 @@ const {
 	waitForJob,
 } = require('../dist/shared/client.js');
 const compatibility = require('../compatibility/client-api.json');
+const packageJson = require('../package.json');
 
 const JOB_ID = '11111111-1111-4111-8111-111111111111';
 
 test('Client API compatibility declaration matches adapter code', () => {
+	assert.equal(compatibility.adapter_version, packageJson.version);
 	assert.deepEqual(compatibility.endpoint_contracts, CLIENT_API_ENDPOINTS);
 	assert.deepEqual(compatibility.known_job_statuses, [...CLIENT_API_KNOWN_STATUSES]);
 	assert.deepEqual(compatibility.terminal_job_statuses, [...CLIENT_API_TERMINAL_STATUSES]);
