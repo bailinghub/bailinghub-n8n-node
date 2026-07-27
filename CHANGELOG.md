@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1 - 2026-07-27
+
+- Align Creator Portal metadata with the exported `bailingHub` node identifier.
+- Use the supported `Development` category for n8n community-node discovery.
+- Add regression coverage for the reviewed metadata contract.
+
 ## 0.1.0 - 2026-07-22
 
 - Add BailingHub credentials with HTTPS-by-default validation.
