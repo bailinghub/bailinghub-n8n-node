@@ -1,8 +1,8 @@
 {
-	"node": "n8n-nodes-bailinghub",
+	"node": "n8n-nodes-bailinghub.bailingHub",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
-	"categories": ["AI", "Development", "Developer Tools"],
+	"categories": ["Development"],
 	"resources": {
 		"credentialDocumentation": [
 			{

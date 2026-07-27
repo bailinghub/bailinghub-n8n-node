@@ -5,6 +5,7 @@ const { BailingHub } = require('../dist/nodes/BailingHub/BailingHub.node.js');
 const {
 	BailingHubApi,
 } = require('../dist/credentials/BailingHubApi.credentials.js');
+const nodeMetadata = require('../nodes/BailingHub/BailingHub.node.json');
 
 const JOB_ID = '11111111-1111-4111-8111-111111111111';
 
@@ -31,6 +32,11 @@ function executionContext(parameters, request) {
 		},
 	};
 }
+
+test('Creator Portal metadata identifies the exact node and uses supported categories', () => {
+	assert.equal(nodeMetadata.node, 'n8n-nodes-bailinghub.bailingHub');
+	assert.deepEqual(nodeMetadata.categories, ['Development']);
+});
 
 test('the n8n node submits through the public client API and returns paired output', async () => {
 	const calls = [];
