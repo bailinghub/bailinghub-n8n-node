@@ -17,7 +17,7 @@ export class BailingHub implements INodeType {
 		icon: { light: 'file:bailinghub.svg', dark: 'file:bailinghub.dark.svg' },
 		group: ['transform'],
 		version: 1,
-		description: 'Submit and monitor governed AI jobs in BailingHub',
+		description: 'Query and operate permitted business systems through BailingHub',
 		subtitle: '={{$parameter["operation"]}}',
 		defaults: { name: 'BailingHub' },
 		inputs: [NodeConnectionTypes.Main],

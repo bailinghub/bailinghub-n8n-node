@@ -1,7 +1,20 @@
 # n8n-nodes-bailinghub
 
-`n8n-nodes-bailinghub` lets n8n workflows submit and monitor governed AI jobs through
+Use `n8n-nodes-bailinghub` to let an n8n workflow query and operate a store, SaaS, CRM,
+ERP, or other business system already connected to
 [BailingHub](https://github.com/bailinghub/bailinghub).
+
+Depending on the capabilities exposed by the business system and the routes allowed for the
+n8n connection, a workflow can, for example:
+
+- react to a stock alert by finding affected products and preparing a restocking action;
+- update a customer record after a trusted form or CRM event;
+- submit a refund request and continue only after the configured approval step completes.
+
+n8n submits a task to an allowed route and receives only its public status and result. It
+does not receive administrator or business-system credentials. BailingHub keeps route
+allowlists, approval state, execution records, and audit trails, while the business system
+makes the final authorization decision.
 
 BailingHub sits between agents or automation workflows and existing business systems. It
 provides a control plane for route allowlists, risk-aware tool governance, human approval
