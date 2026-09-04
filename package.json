@@ -1,7 +1,7 @@
 {
 	"name": "n8n-nodes-bailinghub",
 	"version": "0.1.1",
-	"description": "Submit and monitor governed AI jobs through BailingHub from n8n workflows.",
+	"description": "Let n8n workflows query and operate permitted business systems through BailingHub.",
 	"license": "MIT",
 	"homepage": "https://github.com/bailinghub/bailinghub-n8n-node#readme",
 	"keywords": [
